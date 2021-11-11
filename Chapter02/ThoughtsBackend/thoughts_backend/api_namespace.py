@@ -58,9 +58,9 @@ class MeThoughtListCreate(Resource):
                     .all())
         return thoughts
 
-    @api_namespace.doc('create_thought')
-    @api_namespace.expect(thought_parser)
-    @api_namespace.marshal_with(thought_model, code=http.client.CREATED)
+    @api_namespace.doc('create_thought') # Swagger
+    @api_namespace.expect(thought_parser) 
+    @api_namespace.marshal_with(thought_model, code=http.client.CREATED) #to change an object to json
     def post(self):
         '''
         Create a new thought
@@ -68,12 +68,14 @@ class MeThoughtListCreate(Resource):
         args = thought_parser.parse_args()
         username = authentication_header_parser(args['Authorization'])
 
+        # new_though object
         new_thought = ThoughtModel(username=username,
                                    text=args['text'],
                                    timestamp=datetime.utcnow())
         db.session.add(new_thought)
         db.session.commit()
-
+        
+        # marshal new_thought to json
         result = api_namespace.marshal(new_thought, thought_model)
 
         return result, http.client.CREATED
