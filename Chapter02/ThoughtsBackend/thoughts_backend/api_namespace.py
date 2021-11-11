@@ -7,6 +7,7 @@ from thoughts_backend.token_validation import validate_token_header
 from thoughts_backend.db import db
 from flask import abort
 
+# api_namespace is used to add a prefix in the url. For example: localhost:8000/api/...
 api_namespace = Namespace('api', description='API operations')
 
 
